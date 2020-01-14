@@ -57,7 +57,42 @@
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
+<!-- data-keys return the key code of the key that triggered onkeydown or onkeyup event.  Key code represents number of actual key on the keyboard-->
+
 <script>
+  window.addEventListener('keydown', function(e){
+    // listening for keydown event in the window
+    
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`) 
+    // selects the corresponding audio file based on event key code.
+
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
+    // selects the corresponding key based on event key code
+
+    if (!audio) return
+    // if the audio file doesnt exist, exit the function
+
+    audio.currentTime = 0;
+    // upon key press, this restarts the running of the audio file, so you can press multiple times before it is done running.
+
+    audio.play()
+
+    key.classList.add('playing')
+
+  });
+
+  function removeTransition(e){
+    if (e.propertyName !== 'transform') return
+    //skips if it is not a transform
+    e.target.classList.remove('playing')
+    // removes the class of playing from the key upon transition end
+  }
+
+  const keys = document.querySelectorAll('.key')
+  //selects all keys
+
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition))
+  // each key is listening for the css transition to end.
 
 </script>
 
